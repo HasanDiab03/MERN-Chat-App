@@ -130,6 +130,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
 
   useEffect(() => {
+    fetchNotifications();
     socket = io(ENDPOINT);
     socket.emit("setup", user);
     socket.on("connected", () => {
@@ -139,7 +140,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setIsTyping(true);
     });
     socket.on("stop typing", () => setIsTyping(false));
-    fetchNotifications();
     return () => {
       socket.disconnect();
       // console.log("disconnected socket");
@@ -152,43 +152,50 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   }, [selectedChat]);
 
   // console.log("notifications: ", notifications);
-  useEffect(() => {
-    socket.on("message received", async (newMessageReceived) => {
-      if (
-        !selectedChatCompare ||
-        selectedChatCompare._id !== newMessageReceived.chat._id
-      ) {
-        // give notification if we have no chat selected or if the sent message is not for the currently selected chat
-        if (!notifications.includes(newMessageReceived)) {
-          try {
-            const config = {
-              headers: {
-                Authorization: `Bearer ${user.token}`,
-              },
-            };
-            const { data } = await axios.post(
-              "/api/notification",
-              {
-                newMessage: newMessageReceived,
-              },
-              config
-            );
-            setNotifications([data, ...notifications]);
-          } catch (error) {
-            toast({
-              title: "Error Occurred",
-              description: "Failed to Add Notification",
-              duration: 5000,
-              status: "error",
-              isClosable: true,
-              position: "top",
-            });
-          }
+  const handleNewMessage = async (newMessageReceived) => {
+    if (
+      !selectedChatCompare ||
+      selectedChatCompare._id !== newMessageReceived.chat._id
+    ) {
+      // give notification if we have no chat selected or if the sent message is not for the currently selected chat
+      if (!notifications.includes(newMessageReceived)) {
+        try {
+          const config = {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          };
+          const { data } = await axios.post(
+            "/api/notification",
+            {
+              newMessage: newMessageReceived,
+            },
+            config
+          );
+          setNotifications([data, ...notifications]);
+          setFetchAgain(!fetchAgain);
+        } catch (error) {
+          toast({
+            title: "Error Occurred",
+            description: "Failed to Add Notification",
+            duration: 5000,
+            status: "error",
+            isClosable: true,
+            position: "top",
+          });
         }
-      } else {
-        setMessages([...messages, newMessageReceived]);
       }
-    });
+    } else {
+      setMessages([...messages, newMessageReceived]);
+    }
+  };
+
+  useEffect(() => {
+    socket.on("message received", handleNewMessage);
+    return () => {
+      socket.off('message received');
+      socket.disconnect();
+    }
   });
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
