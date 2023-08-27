@@ -64,9 +64,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         },
         config
       );
-      userToRemove._id === user._id
-        ? setSelectedChat()
-        : setSelectedChat(data);
+      userToRemove._id === user._id ? setSelectedChat() : setSelectedChat(data);
       setFetchAgain(!fetchAgain);
       fetchMessages();
       setLoading(false);
@@ -97,7 +95,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
     } catch (error) {
       toast({
         title: "Error Occurred",
-        description: error.response.data.message,
+        description: "Failed to rename group chat",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -177,7 +175,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
     } catch (error) {
       toast({
         title: "Error Occurred!",
-        description: error.response.data.message,
+        description: "failed to add user to group",
         duration: 5000,
         status: "error",
         isClosable: true,
