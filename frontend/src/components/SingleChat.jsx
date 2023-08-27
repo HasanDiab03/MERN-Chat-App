@@ -161,7 +161,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       selectedChatCompare._id !== newMessageReceived.chat._id
     ) {
       // give notification if we have no chat selected or if the sent message is not for the currently selected chat
-      if (!notifications.includes(newMessageReceived)) {
+      let flag = 0;
+      notifications.forEach((noti) => {
+        if (noti.message._id === newMessageReceived._id) flag = 1;
+      });
+      if (!flag) {
         try {
           const config = {
             headers: {
