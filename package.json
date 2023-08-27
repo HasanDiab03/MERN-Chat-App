@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node backend/index.js",
-    "build": "npm install && npm install --prefix frontend"
+    "build": "npm install --prefix frontend && npm install && npm run build --prefix frontend"
   },
   "author": "Hasan",
   "license": "ISC",
