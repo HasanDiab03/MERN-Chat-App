@@ -179,7 +179,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             },
             config
           );
-          setNotifications([data, ...notifications]);
+          setNotifications((prevNotifications) => [data, prevNotifications]);
           setFetchAgain(!fetchAgain);
         } catch (error) {
           toast({
