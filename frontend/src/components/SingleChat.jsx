@@ -196,7 +196,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       socket.off("message received");
       socket.disconnect();
     };
-  }, [selectedChat]);
+  }, []);
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
     // Typing indicator functionality
