@@ -136,6 +136,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     socket.on("connected", () => {
       setSocketConnected(true);
     });
+    socket.on("message received", (newMessageReceived) => {
+      handleNewMessage(newMessageReceived);
+    });
     socket.on("typing", () => {
       setIsTyping(true);
     });
@@ -150,12 +153,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     fetchMessages();
     selectedChatCompare = selectedChat;
   }, [selectedChat]);
-
-  useEffect(() => {
-    socket.on("message received", (newMessageReceived) => {
-      handleNewMessage(newMessageReceived);
-    });
-  });
 
   // console.log("notifications: ", notifications);
   const handleNewMessage = async (newMessageReceived) => {
