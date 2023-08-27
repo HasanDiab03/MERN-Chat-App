@@ -136,6 +136,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     socket.on("connected", () => {
       setSocketConnected(true);
     });
+    socket.on("message received", (newMessageReceived) => {
+      handleNewMessage(newMessageReceived);
+    });
     socket.on("typing", () => {
       setIsTyping(true);
     });
@@ -189,14 +192,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setMessages([...messages, newMessageReceived]);
     }
   };
-
-  useEffect(() => {
-    socket.on("message received", handleNewMessage);
-    return () => {
-      socket.off("message received");
-      socket.disconnect();
-    };
-  }, []);
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
     // Typing indicator functionality
