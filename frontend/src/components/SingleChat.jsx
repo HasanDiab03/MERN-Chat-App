@@ -174,7 +174,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               config
             );
             setNotifications([data, ...notifications]);
-            setFetchAgain(!fetchAgain);
           } catch (error) {
             toast({
               title: "Error Occurred",
