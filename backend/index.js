@@ -44,7 +44,7 @@ const server = app.listen(
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "https://chatty-yijl.onrender.com",
+    origin: "https://chatty-hd.netlify.app",
   },
 }); // ping timeout is used to automatically close the connection after a certain time if the connection is not being used to save bandwidth
 

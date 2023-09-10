@@ -5,7 +5,7 @@ import ChatPage from "./pages/ChatPage";
 import axios from "axios";
 
 function App() {
-  axios.defaults.baseURL = "https://chatty-yijl.onrender.com";
+  axios.defaults.baseURL = "https://chatty-hd.onrender.com";
   return (
     <div className="App">
       <Routes>
