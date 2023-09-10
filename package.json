@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node backend/index.js",
-    "build": "npm install && npm install --prefix frontend"
+    "start": "node backend/index.js"
   },
   "author": "Hasan",
   "license": "ISC",
