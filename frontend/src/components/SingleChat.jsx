@@ -84,7 +84,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
-        // console.log(data);
         socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {
@@ -154,7 +153,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     selectedChatCompare = selectedChat;
   }, [selectedChat]);
 
-  // console.log("notifications: ", notifications);
   const handleNewMessage = async (newMessageReceived) => {
     if (
       !selectedChatCompare ||
@@ -179,7 +177,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             },
             config
           );
-          setNotifications((prevNotifications) => [data, prevNotifications]);
+          setNotifications((prevNotifications) => [data, ...prevNotifications]);
           setFetchAgain(!fetchAgain);
         } catch (error) {
           toast({
@@ -193,9 +191,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         }
       }
     } else {
-      setMessages([...messages, newMessageReceived]);
+      console.log([...messages, newMessageReceived]);
+      setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
     }
   };
+
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
     // Typing indicator functionality

@@ -44,16 +44,13 @@ const server = app.listen(
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "https://chatty-hd.netlify.app",
+    origin: "http://localhost:5174",
   },
 }); // ping timeout is used to automatically close the connection after a certain time if the connection is not being used to save bandwidth
 
 io.on("connection", (socket) => {
-  // console.log(socket);
-  // console.log(`connected to socket.io`.italic);
   socket.on("setup", (userData) => {
     socket.join(userData._id);
-    console.log(userData._id);
     socket.emit("connected");
   }); // to connect the users to their own rooms, so we can send them messages.
 

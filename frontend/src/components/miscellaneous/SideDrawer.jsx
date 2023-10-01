@@ -54,6 +54,7 @@ const SideDrawer = () => {
     navigate("/");
   };
 
+
   const handleSearch = async () => {
     if (!search) {
       toast({

@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ChatState } from "../../Context/ChatProvider";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,6 +19,7 @@ const Login = () => {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { setUser } = ChatState();
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -42,6 +44,7 @@ const Login = () => {
         position: "bottom",
       });
       localStorage.setItem("userInfo", JSON.stringify(data));
+      setUser(data);
       setLoading(false);
       navigate("/chats");
     } catch (error) {

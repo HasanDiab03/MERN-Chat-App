@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import ScrollableFeed from "react-scrollable-feed";
 import {
   isLastMessage,

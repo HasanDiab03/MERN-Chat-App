@@ -17,7 +17,6 @@ module.exports.allNotifications = asyncHandler(async (req, res) => {
       path: "message.chat.users",
       select: "name",
     });
-    console.log("notifications: ", notifications);
     return res.json(notifications);
   } catch (error) {
     res.status(400);
@@ -36,8 +35,17 @@ module.exports.addNotification = asyncHandler(async (req, res) => {
       belong: req.user._id,
       message: newMessage,
     });
-    notification = await notification.populate("belong", "name email pic");
+    notification = await notification.populate("belong", "name pic");
     notification = await notification.populate("message");
+    notification = await Chat.populate(notification, {
+      path: "message.chat",
+      select: "isGroupChat users chatName",
+    });
+    notification = await User.populate(notification, {
+      path: "message.chat.users",
+      select: "name",
+    });
+    res.status(201).json(notification);
   } catch (error) {
     res.status(400);
     throw new Error(error.message);
@@ -46,7 +54,6 @@ module.exports.addNotification = asyncHandler(async (req, res) => {
 
 module.exports.removeNotification = asyncHandler(async (req, res) => {
   const { notifId } = req.params;
-  console.log('hii');
   try {
     await Notification.deleteOne({
       _id: notifId,

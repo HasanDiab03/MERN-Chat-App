@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
+import { ChatState } from "../../Context/ChatProvider";
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -24,6 +25,7 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
+  const { setUser } = ChatState();
   const postDetails = async (pics) => {
     setLoading(true);
     if (pics === undefined) {
@@ -73,7 +75,6 @@ const SignUp = () => {
     }
 
     try {
-      // console.log(pic);
       const { data } =
         pic === ""
           ? await axios.post("/api/user", { name, email, password })
@@ -85,8 +86,8 @@ const SignUp = () => {
         isClosable: true,
         position: "bottom",
       });
-      // console.log(data);
       localStorage.setItem("userInfo", JSON.stringify(data));
+      setUser(data);
       setLoading(false);
       navigate("/chats");
     } catch (error) {
